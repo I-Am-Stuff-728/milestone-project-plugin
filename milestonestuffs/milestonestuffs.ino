@@ -33,6 +33,13 @@ void setup() {
   // put your setup code here, to run once:
   pinMode(sonarTrig, OUTPUT);
   pinMode(sonarEcho, INPUT);
+  for (int i=0;i<buttonPins.length;i++){
+    pinMode(buttonPins[i], INPUT);
+  }
+    pinMode(buzzerPins[0], OUTPUT);
+    pinMode(buzzerPins[1], OUTPUT);
+    pinMode(pirPin[i], INPUT);
+
   Serial.begin(9600);
 
 }
