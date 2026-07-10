@@ -13,12 +13,13 @@
 
 */
 
-const int buttonPins[] = {9, 10, 11, 12};
-const int ledPins[] = {0, 0};
-const int sonarTrig = 0;
-const int sonarEcho = 0;
-const int pirPin = 0;
-const int buzzerPins[] = {0, 0};
+const int buttonPins[] = {8, 9, 10, 11};
+const int ledPins[] = {6, 7};
+const int sonarTrig = 3;
+const int sonarEcho = 2;
+const int pirPin = 12;
+const int buzzerPins[] = {4, 5};
+const int motorPins[] = {-1,-1};
 
 bool armed = false;
 int armedTicksMax = 15;
@@ -33,12 +34,12 @@ void setup() {
   // put your setup code here, to run once:
   pinMode(sonarTrig, OUTPUT);
   pinMode(sonarEcho, INPUT);
-  for (int i=0;i<buttonPins.length;i++){
+  for (int i=0;i<4;i++){
     pinMode(buttonPins[i], INPUT);
   }
     pinMode(buzzerPins[0], OUTPUT);
     pinMode(buzzerPins[1], OUTPUT);
-    pinMode(pirPin[i], INPUT);
+    pinMode(pirPin, INPUT);
 
   Serial.begin(9600);
 
@@ -59,14 +60,14 @@ void loop() {
   delay(50);
 
   if (distance>=300){
-    Serial.println("Too far!!");
+   // Serial.println("Too far!!");
   } else {
-    digitalWrite(buzzerPins[0], HIGH);
+    digitalWrite(buzzerPins[0], LOW);
     if (distance<=100){
-     digitalWrite(buzzerPins[1], HIGH);
-      Serial.println(F("VERY"));
+     digitalWrite(buzzerPins[1], LOW);
+    //  Serial.println(F("VERY"));
     }
-      Serial.println(F("close"));
+    //  Serial.println(F("close"));
   }
   if (armed){
       cooldownTicks = cooldownTicksMax;
@@ -86,18 +87,22 @@ void loop() {
 
   if (digitalRead(buttonPins[0]) == LOW){
       trigger();
+      Serial.println("POW");
   }
 
   if (digitalRead(buttonPins[1]) == LOW){
       rotateLeft();
+            Serial.println("LEFT");
   }
 
   if (digitalRead(buttonPins[2]) == LOW){
       rotateRight();
+            Serial.println("RIGHT");
   }
 
   if (digitalRead(buttonPins[3]) == LOW){
       toggleControl();
+            Serial.println("TOGGLE");
   }
 
 }
