@@ -13,6 +13,17 @@
 
 */
 
+#include <WiFi.h>
+#include <WiFiUdp.h>
+
+const char* ssid = "TEST_ID_NOT_FINAL";
+const char* password = "TEST_PASS_NOT_FINIAL";
+
+WiFiUDP udp;
+
+const int udpPort = 0000;  //NOTA FINAL PORT
+char packet[255];
+
 const int buttonPins[] = {8, 9, 10, 11};
 const int ledPins[] = {6, 7};
 const int sonarTrig = 3;
@@ -31,6 +42,9 @@ float duration, distance;
 bool autoControl = false;
 
 void setup() {
+  WiFi.begin(ssid, password);
+  Serial.println(WiFi.localIP());
+  udp.begin(localUdpPort);
   // put your setup code here, to run once:
   pinMode(sonarTrig, OUTPUT);
   pinMode(sonarEcho, INPUT);
@@ -40,6 +54,9 @@ void setup() {
     pinMode(buzzerPins[0], OUTPUT);
     pinMode(buzzerPins[1], OUTPUT);
     pinMode(pirPin, INPUT);
+
+    pinMode(motorPins[0], OUTPUT);
+    pinMode(motorPins[1], OUTPUT);
 
   Serial.begin(9600);
 
@@ -105,14 +122,46 @@ void loop() {
             Serial.println("TOGGLE");
   }
 
+  int packet = udp.parsePacket();
+          //TODO: DO STUFF HERE TO PARSE STUFF?
+
+    switch (packet){
+            case goLeftPacket:
+              rotateLeft();
+      break;
+            case goRightPacket:
+             rotateRight();
+      break;
+            case toggleControlPacket:
+             toggleControl();
+      break;
+            case triggerPacket:
+             trigger();
+      break;
+            case getControllerPacket:
+             getController();
+      break;
+    }
+
+    
 }
 
+  const int goLeftPacket = -1;
+  const int goLeftPacket = -1;
+  const int toggleControlPacket = -1;
+  const int triggerPacket = -1;
+  const int getControllerPacket = -1;
+    //FIGURE IT OUT LATER SOMEHOW
+
+  //TODO REARRANGE WIRING! Needs PWM so it wont fly off
 void rotateLeft(){
-  //PWM MOTOR TODO
+  analogWrite(motorPins[0], 64);
+  digitalWrite(motorPins[1], LOW);
 }
 
 void rotateRight(){
-  //PWM MOTOR TODO
+  analogWrite(motorPins[1], 64); 
+  digitalWrite(motorPins[0], LOW);
 }
 // rotate left/ right, 
 void trigger(){
