@@ -12,20 +12,28 @@
 10. Light = TASER TASER TASER
 
 */
-
+/*
 #include <WiFi.h>
 #include <WiFiUdp.h>
+WiFiUDP udp;
+*/
 
 const char* ssid = "TEST_ID_NOT_FINAL";
 const char* password = "TEST_PASS_NOT_FINIAL";
 
-WiFiUDP udp;
 
 const int udpPort = 0000;  //NOTA FINAL PORT
 char packet[255];
 
-const int buttonPins[] = {8, 9, 10, 11};
-const int ledPins[] = {6, 7};
+  const int goLeftPacket = 0;
+  const int goRightPacket = 0;
+  const int toggleControlPacket = 0;
+  const int triggerPacket = 0;
+  const int getControllerPacket = 0;
+  
+
+const int buttonPins[] = {9, 10, 11, 8};
+const int ledPins[] = {6, 7, 13};
 const int sonarTrig = 3;
 const int sonarEcho = 2;
 const int pirPin = 12;
@@ -33,24 +41,29 @@ const int buzzerPins[] = {4, 5};
 const int motorPins[] = {-1,-1};
 
 bool armed = false;
-int armedTicksMax = 15;
+int armedTicksMax = 50;
 int armedTicks = armedTicksMax;
-int cooldownTicksMax = 5;
+int cooldownTicksMax = 50;
 int cooldownTicks = cooldownTicksMax;
 float duration, distance;
 
+bool canToggle=true;
 bool autoControl = false;
 
 void setup() {
-  WiFi.begin(ssid, password);
+  /*WiFi.begin(ssid, password);
   Serial.println(WiFi.localIP());
   udp.begin(localUdpPort);
+ */
   // put your setup code here, to run once:
   pinMode(sonarTrig, OUTPUT);
   pinMode(sonarEcho, INPUT);
-  for (int i=0;i<4;i++){
+  for (int i=0;i<3;i++){
     pinMode(buttonPins[i], INPUT);
+    pinMode(ledPins[i], OUTPUT);
   }
+    pinMode(buttonPins[3], INPUT_PULLUP);
+
     pinMode(buzzerPins[0], OUTPUT);
     pinMode(buzzerPins[1], OUTPUT);
     pinMode(pirPin, INPUT);
@@ -72,57 +85,78 @@ void loop() {
 
   duration = pulseIn(sonarEcho, HIGH);
   distance = (duration*.0343)/2;
-  Serial.print(F("Distance in cm: "));
-  Serial.println(distance);
+  //Serial.print(F("Distance in cm: "));
+  //Serial.println(distance);
   delay(50);
 
   if (distance>=300){
    // Serial.println("Too far!!");
+       digitalWrite(buzzerPins[0], HIGH);
+       digitalWrite(buzzerPins[1], HIGH);
   } else {
     digitalWrite(buzzerPins[0], LOW);
+    digitalWrite(buzzerPins[1], HIGH);
+
     if (distance<=100){
      digitalWrite(buzzerPins[1], LOW);
     //  Serial.println(F("VERY"));
     }
     //  Serial.println(F("close"));
   }
-  if (armed){
+ 
+     if (armed){
       cooldownTicks = cooldownTicksMax;
       if (armedTicks>0){
         armedTicks--;
-        Serial.println("WAIT");
+      //  Serial.println("still arming");
+        digitalWrite(ledPins[0], LOW);
+        digitalWrite(ledPins[1], HIGH);
       }else{
-       digitalWrite(ledPins[0], HIGH);
-        Serial.println("button ready");
+       //  Serial.println("button ready to shoot");
+         digitalWrite(ledPins[0], LOW);
+         digitalWrite(ledPins[1], LOW);
       }
   }else{
       if (cooldownTicks>0){
         cooldownTicks--;
+       // Serial.println("cooldown");
+          if (cooldownTicks % 3 == 0){
+            digitalWrite(ledPins[1], LOW);
+          }else{
+            digitalWrite(ledPins[1], HIGH);
+          }
+        digitalWrite(ledPins[0], HIGH);
+      }else{
+      //  Serial.println("ready to arm");
         digitalWrite(ledPins[1], HIGH);
+        digitalWrite(ledPins[0], HIGH);
       }  
     }
 
+
   if (digitalRead(buttonPins[0]) == LOW){
       trigger();
-      Serial.println("POW");
+    //  Serial.println("POW");
   }
 
   if (digitalRead(buttonPins[1]) == LOW){
       rotateLeft();
-            Serial.println("LEFT");
+    //  Serial.println("LEFT");
   }
 
   if (digitalRead(buttonPins[2]) == LOW){
       rotateRight();
-            Serial.println("RIGHT");
+    //  Serial.println("RIGHT");
   }
 
   if (digitalRead(buttonPins[3]) == LOW){
       toggleControl();
-            Serial.println("TOGGLE");
+    //  Serial.println("TOGGLE");
+  }else{
+    canToggle=true;
   }
 
-  int packet = udp.parsePacket();
+ /* int packet = udp.parsePacket();
           //TODO: DO STUFF HERE TO PARSE STUFF?
 
     switch (packet){
@@ -142,18 +176,18 @@ void loop() {
              getController();
       break;
     }
-
+*/
     
+  if (digitalRead(pirPin) == HIGH){
+      digitalWrite(ledPins[2], LOW);
+  }else{
+      digitalWrite(ledPins[2], HIGH);
+  }
+
 }
 
-  const int goLeftPacket = -1;
-  const int goLeftPacket = -1;
-  const int toggleControlPacket = -1;
-  const int triggerPacket = -1;
-  const int getControllerPacket = -1;
-    //FIGURE IT OUT LATER SOMEHOW
-
-  //TODO REARRANGE WIRING! Needs PWM so it wont fly off
+  //TODO: no pwm so do other shit 
+  
 void rotateLeft(){
   analogWrite(motorPins[0], 64);
   digitalWrite(motorPins[1], LOW);
@@ -165,24 +199,31 @@ void rotateRight(){
 }
 // rotate left/ right, 
 void trigger(){
-  if (armed){
-    Serial.println(F("pow"));
-    armed = false;
-    cooldownTicks = cooldownTicksMax;
+   if (armed){
+      if (armedTicks<=0){
+       // Serial.println(F("shoot!"));
+        armed = false;
+        cooldownTicks = cooldownTicksMax;
+      }
   }else{
-     Serial.println(F("ready to pow"));
+    if (cooldownTicks<=0){
+  //  Serial.println(F("begin arming"));
     armed = true;
     armedTicks = armedTicksMax;
+    }
   }
 }
 
 void toggleControl(){
+  if (canToggle){
+    canToggle=false;
   if (autoControl){
     autoControl=false;
   }else{
     autoControl=true;
   }
-  getController();
+ // getController();
+  }
 }
 
 void getController(){
@@ -191,4 +232,6 @@ void getController(){
   }else{
     Serial.println(F("Operator control"));
   }
+  // TODO
+  //SEND PACKET FOR WHOS CONTROLLING
 }
