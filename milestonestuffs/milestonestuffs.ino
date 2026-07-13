@@ -194,6 +194,19 @@ void loop() {
   }
 
  /* int packet = udp.parsePacket();
+  if (packet){
+    int len = Udp.read(packetBuffer, 255);
+    if (len > 0) {
+      packet[len] = 0; 
+          }
+  }
+
+  /*
+    Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
+    Udp.write("Packet testing");
+    Udp.endPacket();
+  */
+  /*
           //TODO: DO STUFF HERE TO PARSE STUFF?
 
     switch (packet){
