@@ -1,15 +1,15 @@
 /*
 
-1. Get esp32
+1. Get esp32 
 2. Connect esp32 to wifi
 3. Receive commands (???) 4. profit
-4. Commands = methods to control thing
-5. Buttons
-6. Motor control with PWM to rotate board
-7. 3D print platform 4 board (???)
+4. Commands = methods to control thing  yess
+5. Buttons yess (temporary)
+6. Motor control with PWM to rotate board  YES (stepper no pwm even better)
+7. 3D print platform 4 board (???)  
 8. Attach
-9. Buzzers with PWM
-10. Light = TASER TASER TASER
+9. Buzzers with PWM  NO PWM!!! and no buzzers for silence but i can add it latr
+10. Light = TASER TASER TASER    yess
 
 */
 /*
@@ -18,11 +18,17 @@
 WiFiUDP udp;
 */
 
+#include <Stepper.h>
+#define STEPS 2048
+
 const char* ssid = "TEST_ID_NOT_FINAL";
 const char* password = "TEST_PASS_NOT_FINIAL";
 
 
 const int udpPort = 0000;  //NOTA FINAL PORT
+
+int currentSteps = 0;
+
 char packet[255];
 
   const int goLeftPacket = 0;
@@ -31,19 +37,24 @@ char packet[255];
   const int triggerPacket = 0;
   const int getControllerPacket = 0;
   
-
-const int buttonPins[] = {9, 10, 11, 8};
+                          // CHANGE 11, 10 TO ANALOG TO USE PWM!!!!!!!                            
+const int buttonPins[] = {A2, A1, A0, A3};
+                  //   trig   l  r  contr
+                      //9 10  11  8
 const int ledPins[] = {6, 7, 13};
 const int sonarTrig = 3;
 const int sonarEcho = 2;
 const int pirPin = 12;
 const int buzzerPins[] = {4, 5};
-const int motorPins[] = {-1,-1};
+//const int motorPins[] = {10, 11};
+const int stepperPins[] = {8,10,9,11};
+
+Stepper stepper(STEPS, stepperPins[0], stepperPins[1], stepperPins[2], stepperPins[3]);
 
 bool armed = false;
-int armedTicksMax = 50;
+int armedTicksMax = 22;
 int armedTicks = armedTicksMax;
-int cooldownTicksMax = 50;
+int cooldownTicksMax = 36;
 int cooldownTicks = cooldownTicksMax;
 float duration, distance;
 
@@ -55,6 +66,7 @@ void setup() {
   Serial.println(WiFi.localIP());
   udp.begin(localUdpPort);
  */
+   stepper.setSpeed(15);
   // put your setup code here, to run once:
   pinMode(sonarTrig, OUTPUT);
   pinMode(sonarEcho, INPUT);
@@ -68,12 +80,11 @@ void setup() {
     pinMode(buzzerPins[1], OUTPUT);
     pinMode(pirPin, INPUT);
 
-    pinMode(motorPins[0], OUTPUT);
-    pinMode(motorPins[1], OUTPUT);
-
   Serial.begin(9600);
 
 }
+
+bool freeze = false;
 
 void loop() {
   // put your main code here, to run repeatedly:
@@ -89,11 +100,16 @@ void loop() {
   //Serial.println(distance);
   delay(50);
 
+
   if (distance>=300){
+       freeze=false;
    // Serial.println("Too far!!");
        digitalWrite(buzzerPins[0], HIGH);
        digitalWrite(buzzerPins[1], HIGH);
+
   } else {
+      freeze=true;
+      frontalDetectedAlarm();
     digitalWrite(buzzerPins[0], LOW);
     digitalWrite(buzzerPins[1], HIGH);
 
@@ -139,14 +155,18 @@ void loop() {
     //  Serial.println("POW");
   }
 
-  if (digitalRead(buttonPins[1]) == LOW){
+  if (digitalRead(buttonPins[1]) == LOW && !autoControl){
       rotateLeft();
-    //  Serial.println("LEFT");
+      Serial.println("LEFT");
+  }else{
+   //  digitalWrite(motorPins[0], LOW); 
   }
 
-  if (digitalRead(buttonPins[2]) == LOW){
+  if (digitalRead(buttonPins[2]) == LOW && !autoControl){
       rotateRight();
-    //  Serial.println("RIGHT");
+      Serial.println("RIGHT");
+  }else{
+   //  digitalWrite(motorPins[1], LOW);
   }
 
   if (digitalRead(buttonPins[3]) == LOW){
@@ -154,6 +174,23 @@ void loop() {
     //  Serial.println("TOGGLE");
   }else{
     canToggle=true;
+  }
+
+  if (autoControl){
+    currentSteps+=30;
+ 
+      if (currentSteps>=2048){
+        currentSteps=0;
+      }else if (currentSteps>=1024){
+        if (!freeze){
+          stepper.step(-60);
+        }
+      }else{
+        if (!freeze){
+          stepper.step(60);
+        }
+      }
+   // Serial.println(currentSteps);
   }
 
  /* int packet = udp.parsePacket();
@@ -180,22 +217,23 @@ void loop() {
     
   if (digitalRead(pirPin) == HIGH){
       digitalWrite(ledPins[2], LOW);
+  //    Serial.println("YUP");
+      motionDetectedAlarm();
   }else{
       digitalWrite(ledPins[2], HIGH);
+    //  Serial.println("NOP");
   }
 
 }
 
   //TODO: no pwm so do other shit 
-  
+
 void rotateLeft(){
-  analogWrite(motorPins[0], 64);
-  digitalWrite(motorPins[1], LOW);
+  stepper.step(-60);
 }
 
 void rotateRight(){
-  analogWrite(motorPins[1], 64); 
-  digitalWrite(motorPins[0], LOW);
+  stepper.step(60);
 }
 // rotate left/ right, 
 void trigger(){
@@ -234,4 +272,16 @@ void getController(){
   }
   // TODO
   //SEND PACKET FOR WHOS CONTROLLING
+}
+
+
+void motionDetectedAlarm(){
+  // TODO:
+  //SEND PACKET
+}
+
+
+void frontalDetectedAlarm(){
+  // TODO:
+  //SEND PACKET
 }
