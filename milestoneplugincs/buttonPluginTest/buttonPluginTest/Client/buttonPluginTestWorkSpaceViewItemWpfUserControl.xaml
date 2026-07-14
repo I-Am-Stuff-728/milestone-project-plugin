@@ -7,14 +7,12 @@
              xmlns:platformclient="clr-namespace:VideoOS.Platform.Client;assembly=VideoOS.Platform"
              mc:Ignorable="d" ClickEvent="ViewItemWpfUserControl_ClickEvent" DoubleClickEvent="ViewItemWpfUserControl_DoubleClickEvent" Height="271" Width="253">
     <Grid>
-        <TextBox x:Name="ip" HorizontalAlignment="Left" Height="23" Margin="59,3,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="188" TextChanged="textBox_TextChanged"/>
-        <TextBox x:Name="pass" HorizontalAlignment="Left" Height="23" Margin="59,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="188" TextChanged="textBox_TextChanged"/>
-        <Button x:Name="buttonMin" Content="Connect" HorizontalAlignment="Left" Margin="199,59,0,0" VerticalAlignment="Top" Width="auto" Click="buttonMin_Click"/>
-        <Button x:Name="buttonMin_Copy" Content="left" Margin="10,113,188,105" Click="buttonMin_Click" Height="53"/>
-        <Button x:Name="buttonMin_Copy1" Content="left"  Margin="186,112,10,105"  Width="57" Click="buttonMin_Click" Height="54"/>
-        <Button x:Name="buttonMin_Copy2" Content="toggle control"  Margin="98,69,99,148" Width="56" Click="buttonMin_Click" Height="54"/>
-        <Button x:Name="buttonMin_Copy3" Content="activate"  Margin="98,162,99,55" Width="56" Click="buttonMin_Click" Height="54"/>
+        <TextBox x:Name="ip" Height="23" Margin="59,3,52,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="142" TextChanged="textBox_TextChanged"/>
+        <Button x:Name="buttonMin" Content="Connect" Margin="203,5,0,0" VerticalAlignment="Top" Width="47" Click="buttonMin_Click" HorizontalAlignment="Left"/>
+        <Button x:Name="level" Content="left" Margin="10,79,188,139" Click="buttonMin_Click" Height="53"/>
+        <Button x:Name="right" Content="right"  Margin="186,78,10,139"  Width="57" Click="buttonMin_Click" Height="54"/>
+        <Button x:Name="toggle" Content="toggle"  Margin="98,35,99,182" Width="56" Click="buttonMin_Click" Height="54"/>
+        <Button x:Name="activate" Content="activate"  Margin="98,128,99,89" Width="56" Click="buttonMin_Click" Height="54"/>
         <Label x:Name="label" Content="Device IP:" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Label x:Name="label_Copy" Content="Device PW:" HorizontalAlignment="Left" Margin="0,28,0,0" VerticalAlignment="Top" Width="61"/>
     </Grid>
 </platformclient:ViewItemWpfUserControl>

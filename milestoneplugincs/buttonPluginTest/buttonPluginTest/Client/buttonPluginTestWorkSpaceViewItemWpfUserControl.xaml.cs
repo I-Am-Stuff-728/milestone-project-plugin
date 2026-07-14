@@ -1,4 +1,6 @@
 using System;
+using System.Net.Sockets;
+using System.Text;
 using System.Windows;
 using VideoOS.Platform.Client;
 
@@ -49,25 +51,61 @@ namespace buttonPluginTest.Client
         private void buttonMin_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             String[] split = sender.ToString().Split(':');
-            //  MessageBox.Show(sender.GetType()+ "");
             String command = split[split.Length - 1].Trim().ToLower();
-            //MessageBox.Show("n"+test+ "c");
-          //  MessageBox.Show(e.ToString());
-          //  MessageBox.Show(e.GetType()+"");
-
+          
             switch (command) {
                 case "connect":
-                    MessageBox.Show("TEST!!!");
+                  //  deviceClient = new UdpClient(portShits);
+                    deviceIP = ip.Text;
                     MessageBox.Show(ip.Text);
-                    MessageBox.Show(pass.Text);
-
                     break;
                 case "left":
-                    MessageBox.Show("LEFT!!!");
+                    if (//deviceClient != null &&
+                        !deviceIP.Equals(null))
+                    {
+                        SendUdp(portShits, deviceIP, portShits, Encoding.ASCII.GetBytes("left"));
+                    }
+                    break;
+                case "right":
+                    if (//deviceClient != null && 
+                        !deviceIP.Equals(null))
+                    {
+                        SendUdp(portShits, deviceIP, portShits, Encoding.ASCII.GetBytes("right"));
+                    }
+                    break;
+                case "toggle":
+                    if (//deviceClient != null &&
+                        !deviceIP.Equals(null))
+                    {
+                        SendUdp(portShits, deviceIP, portShits, Encoding.ASCII.GetBytes("toggle"));
+                    }
+                    break;
+                case "activate":
+                    if (//deviceClient != null &&
+                        !deviceIP.Equals(null))
+                    {
+                        // MessageBox.Show("trigger!!!");
+                        SendUdp(portShits, deviceIP, portShits, Encoding.ASCII.GetBytes("trigger"));
+                    }
                     break;
 
             }
             //HERE FOR BUTTOn
+            //SendUdp(portShits, deviceIP, portShits, Encoding.ASCII.GetBytes("cmd1"));
         }
+        static void SendUdp(int srcPort, string dstIp, int dstPort, byte[] data)
+        {
+          //  deviceClient.Send();
+             using (UdpClient c = new UdpClient(srcPort))
+           // UdpClient deviceClient = new UdpClient();
+            //  if (deviceClient!=null) {
+              c.Send(data, data.Length, dstIp, dstPort);
+            //deviceClient1
+           // _ = _deviceClient.Send(data, data.Length, dstIp, dstPort);
+           // }
+        }
+        UdpClient deviceClient = new UdpClient();
+        String deviceIP = null;
+        int portShits = 11000;
     }
 }

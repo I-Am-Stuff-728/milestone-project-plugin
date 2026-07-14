@@ -12,24 +12,27 @@
 10. Light = TASER TASER TASER    yess
 
 */
-/*
+
 #include <WiFi.h>
 #include <WiFiUdp.h>
 WiFiUDP udp;
-*/
+
+IPAddress local_IP(192,168,0,103);
+IPAddress gateway(192,168,0,105);
+IPAddress subnet(255,255,255,0);
 
 #include <Stepper.h>
 #define STEPS 2048
 
-const char* ssid = "TEST_ID_NOT_FINAL";
-const char* password = "TEST_PASS_NOT_FINIAL";
+const char* ssid = "MDA-Set-05";
+const char* password = "Milestonesys!";
 
 
-const int udpPort = 0000;  //NOTA FINAL PORT
+const unsigned int udpPort = 11000;  //NOTA FINAL PORT
 
 int currentSteps = 0;
 
-char packet[255];
+unsigned char packetBuffer[255];
 
   const int goLeftPacket = 0;
   const int goRightPacket = 0;
@@ -38,16 +41,16 @@ char packet[255];
   const int getControllerPacket = 0;
   
                           // CHANGE 11, 10 TO ANALOG TO USE PWM!!!!!!!                            
-const int buttonPins[] = {A2, A1, A0, A3};
+const int buttonPins[] = {17, 18, 19, 16};
                   //   trig   l  r  contr
                       //9 10  11  8
-const int ledPins[] = {6, 7, 13};
-const int sonarTrig = 3;
-const int sonarEcho = 2;
-const int pirPin = 12;
-const int buzzerPins[] = {4, 5};
+const int ledPins[] = {600, 700, 130};
+const int sonarTrig = 300;
+const int sonarEcho = 200;
+const int pirPin = 120;
+const int buzzerPins[] = {400, 500};
 //const int motorPins[] = {10, 11};
-const int stepperPins[] = {8,10,9,11};
+const int stepperPins[] = {100,100,900,110};
 
 Stepper stepper(STEPS, stepperPins[0], stepperPins[1], stepperPins[2], stepperPins[3]);
 
@@ -62,10 +65,24 @@ bool canToggle=true;
 bool autoControl = false;
 
 void setup() {
-  /*WiFi.begin(ssid, password);
+    Serial.begin(9600);
+    Serial.println("Start");
+    if (!WiFi.config(local_IP, gateway, subnet)){
+      Serial.println("FUCK YOU");      
+    }
+  WiFi.begin(ssid, password);
   Serial.println(WiFi.localIP());
-  udp.begin(localUdpPort);
- */
+
+while (WiFi.status() != WL_CONNECTED){
+  delay(500);
+  Serial.println("...");
+}
+    Serial.println("connected");
+  Serial.println(WiFi.localIP());
+
+
+  udp.begin(udpPort);
+ 
    stepper.setSpeed(15);
   // put your setup code here, to run once:
   pinMode(sonarTrig, OUTPUT);
@@ -79,14 +96,12 @@ void setup() {
     pinMode(buzzerPins[0], OUTPUT);
     pinMode(buzzerPins[1], OUTPUT);
     pinMode(pirPin, INPUT);
-
-  Serial.begin(9600);
-
 }
 
 bool freeze = false;
 
 void loop() {
+ //   Serial.println("aaa");
   // put your main code here, to run repeatedly:
   digitalWrite(sonarTrig, LOW);
   delayMicroseconds(2);
@@ -98,7 +113,7 @@ void loop() {
   distance = (duration*.0343)/2;
   //Serial.print(F("Distance in cm: "));
   //Serial.println(distance);
-  delay(50);
+ // delay(50);
 
 
   if (distance>=300){
@@ -109,7 +124,7 @@ void loop() {
 
   } else {
       freeze=true;
-      frontalDetectedAlarm();
+     // frontalDetectedAlarm();
     digitalWrite(buzzerPins[0], LOW);
     digitalWrite(buzzerPins[1], HIGH);
 
@@ -150,9 +165,9 @@ void loop() {
     }
 
 
-  if (digitalRead(buttonPins[0]) == LOW){
+ /* if (digitalRead(buttonPins[0]) == LOW){
       trigger();
-    //  Serial.println("POW");
+      Serial.println("POW");
   }
 
   if (digitalRead(buttonPins[1]) == LOW && !autoControl){
@@ -160,9 +175,9 @@ void loop() {
       Serial.println("LEFT");
   }else{
    //  digitalWrite(motorPins[0], LOW); 
-  }
+  }*/
 
-  if (digitalRead(buttonPins[2]) == LOW && !autoControl){
+ /* if (digitalRead(buttonPins[2]) == LOW && !autoControl){
       rotateRight();
       Serial.println("RIGHT");
   }else{
@@ -171,10 +186,10 @@ void loop() {
 
   if (digitalRead(buttonPins[3]) == LOW){
       toggleControl();
-    //  Serial.println("TOGGLE");
+      Serial.println("TOGGLE");
   }else{
     canToggle=true;
-  }
+  }*/
 
   if (autoControl){
     currentSteps+=30;
@@ -193,13 +208,40 @@ void loop() {
    // Serial.println(currentSteps);
   }
 
- /* int packet = udp.parsePacket();
+  int packet = udp.parsePacket();
   if (packet){
-    int len = Udp.read(packetBuffer, 255);
+    
+    int len = udp.read(packetBuffer, 255);
     if (len > 0) {
-      packet[len] = 0; 
+              String packetCommand = String ((char*)packetBuffer).substring(0, len);
+              Serial.println(packetCommand);
+
+              if (packetCommand.equals("left")){
+                    rotateLeft();
+                 }
+              if (packetCommand.equals("right")){
+                    rotateRight();
+              }
+               if (packetCommand.equals("trigger")){
+                    trigger();
+                 }
+                if (packetCommand.equals("toggle")){
+                    toggleControl();
+                  }
+                if (packetCommand.equals("moveAlarm")){
+                 //   toggleControl();
+                  }
+                if (packetCommand.equals("frontAlarm")){
+                 //   toggleControl();
+                  }
+                if (packetCommand.equals("whoControls")){
+               //     getController();
+                  }   
+                 packetBuffer[len] = 0; 
+              }  
           }
-  }
+
+  Serial.println(packet);
 
   /*
     Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
@@ -242,14 +284,17 @@ void loop() {
   //TODO: no pwm so do other shit 
 
 void rotateLeft(){
+  Serial.println("i go to the left");
   stepper.step(-60);
 }
 
 void rotateRight(){
+    Serial.println("i go to the right");
   stepper.step(60);
 }
 // rotate left/ right, 
 void trigger(){
+    Serial.println("i trigger");
    if (armed){
       if (armedTicks<=0){
        // Serial.println(F("shoot!"));
@@ -266,6 +311,7 @@ void trigger(){
 }
 
 void toggleControl(){
+    Serial.println("i toggle");
   if (canToggle){
     canToggle=false;
   if (autoControl){

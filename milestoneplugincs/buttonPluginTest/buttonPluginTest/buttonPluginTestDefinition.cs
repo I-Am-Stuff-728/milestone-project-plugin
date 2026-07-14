@@ -170,6 +170,7 @@ namespace buttonPluginTest
         /// </summary>
         public override void Close()
         {
+
             _itemNodes.Clear();
             _sidePanelPlugins.Clear();
             _viewItemPlugins.Clear();
