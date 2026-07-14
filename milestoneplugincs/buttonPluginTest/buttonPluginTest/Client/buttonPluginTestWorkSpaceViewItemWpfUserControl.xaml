@@ -8,10 +8,10 @@
              mc:Ignorable="d" ClickEvent="ViewItemWpfUserControl_ClickEvent" DoubleClickEvent="ViewItemWpfUserControl_DoubleClickEvent" Height="271" Width="253">
     <Grid>
         <TextBox x:Name="ip" Height="23" Margin="59,3,52,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="142" TextChanged="textBox_TextChanged"/>
-        <Button x:Name="buttonMin" Content="Connect" Margin="203,5,0,0" VerticalAlignment="Top" Width="47" Click="buttonMin_Click" HorizontalAlignment="Left"/>
-        <Button x:Name="level" Content="left" Margin="10,79,188,139" Click="buttonMin_Click" Height="53"/>
-        <Button x:Name="right" Content="right"  Margin="186,78,10,139"  Width="57" Click="buttonMin_Click" Height="54"/>
-        <Button x:Name="toggle" Content="toggle"  Margin="98,35,99,182" Width="56" Click="buttonMin_Click" Height="54"/>
+        <Button x:Name="connect" Content="Connect" Margin="203,5,0,0" VerticalAlignment="Top" Width="47" Click="buttonMin_Click" HorizontalAlignment="Left"/>
+        <Button x:Name="level" Content="Left" Margin="10,79,188,139" Click="buttonMin_Click" Height="53"/>
+        <Button x:Name="right" Content="Right"  Margin="186,78,10,139"  Width="57" Click="buttonMin_Click" Height="54"/>
+        <Button x:Name="toggle" Content="Toggle"  Margin="98,35,99,182" Width="56" Click="buttonMin_Click" Height="54"/>
         <Button x:Name="activate" Content="activate"  Margin="98,128,99,89" Width="56" Click="buttonMin_Click" Height="54"/>
         <Label x:Name="label" Content="Device IP:" HorizontalAlignment="Left" VerticalAlignment="Top"/>
     </Grid>
