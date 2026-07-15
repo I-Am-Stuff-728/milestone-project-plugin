@@ -8,9 +8,11 @@ namespace buttonPluginTest.Client
         {
         }
 
+        public ViewItemWpfUserControl viewThing;
         public override ViewItemWpfUserControl GenerateViewItemWpfUserControl()
         {
-            return new buttonPluginTestWorkSpaceViewItemWpfUserControl();
+            viewThing = new buttonPluginTestWorkSpaceViewItemWpfUserControl();
+            return viewThing;
         }
     }
 }

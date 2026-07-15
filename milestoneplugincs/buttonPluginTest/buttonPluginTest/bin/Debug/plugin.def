@@ -1,4 +1,0 @@
-<plugin>
-   <file name="buttonPluginTest.dll"/>
-   <load env="Client"/>
-</plugin>

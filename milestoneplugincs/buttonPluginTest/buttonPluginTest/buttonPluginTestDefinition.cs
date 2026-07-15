@@ -137,23 +137,17 @@ namespace buttonPluginTest
             if (EnvironmentManager.Instance.EnvironmentType == EnvironmentType.SmartClient)
             {
                 _workSpacePlugins.Add(new buttonPluginTestWorkSpacePlugin());
-              //  _sidePanelPlugins.Add(new buttonPluginTestSidePanelPlugin());
                 _viewItemPlugins.Add(new buttonPluginTestViewItemPlugin());
-                _viewItemPlugins.Add(new buttonPluginTestWorkSpaceViewItemPlugin());
-             //   _viewItemToolbarPlugins.Add(new buttonPluginTestViewItemToolbarPlugin());
-             //   _workSpaceToolbarPlugins.Add(new buttonPluginTestWorkSpaceToolbarPlugin());
-           
+               _viewItemPlugins.Add(viewStuff);           
                 
-                //    _settingsPanelPlugins.Add(new buttonPluginTestSettingsPanelPlugin());
-
                 // TODO: remove below check when buttonPluginTestDefinition.buttonPluginTestClientActionGroupId has been replaced with proper GUID
                 if (Id == new Guid("55555555-5555-5555-5555-555555555551"))
                 {
                     System.Windows.MessageBox.Show("Default GUID has not been replaced for buttonPluginTestClientActionGroupId!");
                 }
                 ClientActionGroup clientActionGroup = new ClientActionGroup(buttonPluginTestClientActionGroupId, "buttonPluginTest Client Action Group", buttonPluginTestDefinition.PluginIcon); //Note that the group name should be localized.
-                clientActionGroup.Actions.Add(new buttonPluginTestClientAction());
-                _clientActionGroups.Add(clientActionGroup);
+               // clientActionGroup.Actions.Add(new buttonPluginTestClientAction());
+              //  _clientActionGroups.Add(clientActionGroup);
             }
             if (EnvironmentManager.Instance.EnvironmentType == EnvironmentType.Administration)
             {
@@ -163,14 +157,14 @@ namespace buttonPluginTest
 
             _backgroundPlugins.Add(new buttonPluginTestBackgroundPlugin());
         }
-
+        buttonPluginTestWorkSpaceViewItemPlugin viewStuff = new buttonPluginTestWorkSpaceViewItemPlugin();
         /// <summary>
         /// The main application is about to be in an undetermined state, either logging off or exiting.
         /// You can release resources at this point, it should match what you acquired during Init, so additional call to Init() will work.
         /// </summary>
         public override void Close()
         {
-
+          //  viewStuff.itsMe.viewThing.closeSocketStuff();
             _itemNodes.Clear();
             _sidePanelPlugins.Clear();
             _viewItemPlugins.Clear();

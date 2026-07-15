@@ -51,9 +51,9 @@ namespace buttonPluginTest.Client
 
             //build view layout - modify to your needs. Here we use a matrix of 1000x1000 to define the layout 
             List<Rectangle> rectangles = new List<Rectangle>();
-            rectangles.Add(new Rectangle(000, 000, 200, 200));      // Index 0 = Used by a camera below
-            rectangles.Add(new Rectangle(200, 000, 800, 200));      // Index 1 = the sample ViewItem
-            rectangles.Add(new Rectangle(000, 200, 1000, 800));     // Index 2
+            rectangles.Add(new Rectangle(000, 000, 1000, 700));      // Index 0 = Used by a camera below
+            rectangles.Add(new Rectangle(000, 700, 1000, 300));      // Index 1 = the sample ViewItem
+         //   rectangles.Add(new Rectangle(000, 200, 1000, 800));     // Index 2
             ViewAndLayoutItem.Layout = rectangles.ToArray();
             ViewAndLayoutItem.Name = Name;
 
@@ -73,7 +73,7 @@ namespace buttonPluginTest.Client
             properties2.Add("Scaling", "4"); // fit in 640x480
             properties2.Add("Addscript", "false");
             properties2.Add("HideNavigationBar", "false");
-            ViewAndLayoutItem.InsertBuiltinViewItem(2, ViewAndLayoutItem.HTMLBuiltinId, properties2);
+          //  ViewAndLayoutItem.InsertBuiltinViewItem(2, ViewAndLayoutItem.HTMLBuiltinId, properties2);
 
         }
 

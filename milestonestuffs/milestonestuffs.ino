@@ -26,7 +26,7 @@ IPAddress subnet(255,255,255,0);
 
 const char* ssid = "MDA-Set-05";
 const char* password = "Milestonesys!";
-
+const String devicePass = "";
 
 const unsigned int udpPort = 11000;  //NOTA FINAL PORT
 
@@ -41,18 +41,23 @@ unsigned char packetBuffer[255];
   const int getControllerPacket = 0;
   
                           // CHANGE 11, 10 TO ANALOG TO USE PWM!!!!!!!                            
-const int buttonPins[] = {17, 18, 19, 16};
+//const int buttonPins[] = {17, 18, 19, 16};
                   //   trig   l  r  contr
                       //9 10  11  8
-const int ledPins[] = {600, 700, 130};
-const int sonarTrig = 300;
-const int sonarEcho = 200;
-const int pirPin = 120;
-const int buzzerPins[] = {400, 500};
-//const int motorPins[] = {10, 11};
-const int stepperPins[] = {100,100,900,110};
+                      // NO MORE BUTTONS!!! (physical)
+const int ledPins[] = {18, 21, 16};
+const int sonarTrig = 27; //ok
+const int sonarEcho = 36; //OK
+const int pirPin = 39; //OK
+const int buzzerPins[] = {4, 13};// 4 13
 
-Stepper stepper(STEPS, stepperPins[0], stepperPins[1], stepperPins[2], stepperPins[3]);
+// 16  17  25 26 27 32 33
+//34 35 36 39 IO
+
+//const int motorPins[] = {10, 11};
+const int stepperPins[] = {22,23,25,26};
+                          //22  23   25   26
+Stepper stepper(STEPS, stepperPins[0], stepperPins[2], stepperPins[1], stepperPins[3]);
 
 bool armed = false;
 int armedTicksMax = 22;
@@ -62,7 +67,7 @@ int cooldownTicks = cooldownTicksMax;
 float duration, distance;
 
 bool canToggle=true;
-bool autoControl = false;
+bool autoControl = true;
 
 void setup() {
     Serial.begin(9600);
@@ -88,14 +93,15 @@ while (WiFi.status() != WL_CONNECTED){
   pinMode(sonarTrig, OUTPUT);
   pinMode(sonarEcho, INPUT);
   for (int i=0;i<3;i++){
-    pinMode(buttonPins[i], INPUT);
+  //  pinMode(buttonPins[i], INPUT);
     pinMode(ledPins[i], OUTPUT);
   }
-    pinMode(buttonPins[3], INPUT_PULLUP);
+  //  pinMode(buttonPins[3], INPUT_PULLUP);
 
     pinMode(buzzerPins[0], OUTPUT);
     pinMode(buzzerPins[1], OUTPUT);
     pinMode(pirPin, INPUT);
+    //echo pir input only
 }
 
 bool freeze = false;
@@ -113,7 +119,7 @@ void loop() {
   distance = (duration*.0343)/2;
   //Serial.print(F("Distance in cm: "));
   //Serial.println(distance);
- // delay(50);
+  delay(50);
 
 
   if (distance>=300){
@@ -129,6 +135,7 @@ void loop() {
     digitalWrite(buzzerPins[1], HIGH);
 
     if (distance<=100){
+     digitalWrite(buzzerPins[0], LOW);
      digitalWrite(buzzerPins[1], LOW);
     //  Serial.println(F("VERY"));
     }
@@ -198,14 +205,14 @@ void loop() {
         currentSteps=0;
       }else if (currentSteps>=1024){
         if (!freeze){
-          stepper.step(-60);
+            rotateLeft();
         }
       }else{
         if (!freeze){
-          stepper.step(60);
+            rotateRight();
         }
       }
-   // Serial.println(currentSteps);
+  //  Serial.println(currentSteps);
   }
 
   int packet = udp.parsePacket();
@@ -228,14 +235,26 @@ void loop() {
                 if (packetCommand.equals("toggle")){
                     toggleControl();
                   }
+                  if (packetCommand.equals("connect")){
+                      udp.beginPacket(udp.remoteIP(), 11005);
+                      udp.print(("connect success"));
+                      udp.endPacket();
+                  }
                 if (packetCommand.equals("moveAlarm")){
-                 //   toggleControl();
+               /*       udp.beginPacket(udp.remoteIP(), 11005);
+                      udp.print("movementAlarm");
+                      udp.endPacket();
+                      */
+                      motionDetectedAlarm();
                   }
                 if (packetCommand.equals("frontAlarm")){
-                 //   toggleControl();
-                  }
+                  frontalDetectedAlarm();
+                     /* udp.beginPacket(udp.remoteIP(), 11005);
+                      udp.print("frontAlarm");
+                      udp.endPacket();                 */
+                       }
                 if (packetCommand.equals("whoControls")){
-               //     getController();
+                    getController();
                   }   
                  packetBuffer[len] = 0; 
               }  
@@ -244,8 +263,8 @@ void loop() {
   Serial.println(packet);
 
   /*
-    Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
-    Udp.write("Packet testing");
+    Udp.beginPacket(Udp.remoteIP(), 11005);
+    udp.print("Packet testing");
     Udp.endPacket();
   */
   /*
@@ -284,17 +303,28 @@ void loop() {
   //TODO: no pwm so do other shit 
 
 void rotateLeft(){
-  Serial.println("i go to the left");
-  stepper.step(-60);
+//  Serial.println("i go to the left");
+  if (!freeze){
+    stepper.step(-60);
+
+  }
+        /* udp.beginPacket(udp.remoteIP(), 11005);
+       udp.print(("rotateLeft"));
+       udp.endPacket();*/
 }
 
 void rotateRight(){
-    Serial.println("i go to the right");
-  stepper.step(60);
+  //  Serial.println("i go to the right");
+  if (!freeze){
+    stepper.step(60);
+  }
+    /*   udp.beginPacket(udp.remoteIP(), 11005);
+       udp.print(("rotateRight"));
+       udp.endPacket();*/
 }
 // rotate left/ right, 
 void trigger(){
-    Serial.println("i trigger");
+  //  Serial.println("i trigger");
    if (armed){
       if (armedTicks<=0){
        // Serial.println(F("shoot!"));
@@ -311,24 +341,33 @@ void trigger(){
 }
 
 void toggleControl(){
-    Serial.println("i toggle");
-  if (canToggle){
+         udp.beginPacket(udp.remoteIP(), 11005);
+     //  udp.print(("toggled"));
+       udp.endPacket();
+  //freeze=false;
+ //   Serial.println("i toggle");
+ // if (canToggle){
     canToggle=false;
   if (autoControl){
     autoControl=false;
   }else{
     autoControl=true;
   }
- // getController();
-  }
+ // }
+    getController();
+
 }
 
 void getController(){
+    udp.beginPacket(udp.remoteIP(), 11005);
   if (autoControl){
     Serial.println(F("Autocontrol"));
+    udp.print("autocontrol");
   }else{
     Serial.println(F("Operator control"));
+    udp.print("operator");
   }
+   udp.endPacket();
   // TODO
   //SEND PACKET FOR WHOS CONTROLLING
 }
@@ -337,10 +376,18 @@ void getController(){
 void motionDetectedAlarm(){
   // TODO:
   //SEND PACKET
+       udp.beginPacket(udp.remoteIP(), 11005);
+       udp.print(("motionAlarm"));
+       udp.endPacket();
+       Serial.println("HELP");
 }
 
 
 void frontalDetectedAlarm(){
   // TODO:
   //SEND PACKET
+       udp.beginPacket(udp.remoteIP(), 11005);
+       udp.print(("frontAlarm"));
+       udp.endPacket();
+
 }

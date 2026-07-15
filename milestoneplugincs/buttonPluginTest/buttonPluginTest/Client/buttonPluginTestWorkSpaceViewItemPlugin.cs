@@ -29,10 +29,13 @@ namespace buttonPluginTest.Client
                 return false;
             }
         }
+        public ViewItemManager itsMe;
 
         public override ViewItemManager GenerateViewItemManager()
-        {
-            return new buttonPluginTestWorkSpaceViewItemManager();
+        {   
+            itsMe = new buttonPluginTestWorkSpaceViewItemManager();
+       
+            return itsMe;
         }
 
         public override void Init()

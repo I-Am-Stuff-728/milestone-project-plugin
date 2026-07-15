@@ -134,6 +134,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Admin\buttonPluginTestAddUserControl.resx">
       <DependentUpon>buttonPluginTestAddUserControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

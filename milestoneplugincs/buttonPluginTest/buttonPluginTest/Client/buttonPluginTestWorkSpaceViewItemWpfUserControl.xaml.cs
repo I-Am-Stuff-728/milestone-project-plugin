@@ -1,6 +1,9 @@
 using System;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using VideoOS.Platform.Client;
 
@@ -18,6 +21,7 @@ namespace buttonPluginTest.Client
 
         public override void Init()
         {
+          //  using var udpClient = new UdpClient(portShits);
         }
 
         public override void Close()
@@ -57,7 +61,17 @@ namespace buttonPluginTest.Client
                 case "connect":
                   //  deviceClient = new UdpClient(portShits);
                     deviceIP = ip.Text;
-                    MessageBox.Show(ip.Text);
+                  //  MessageBox.Show(ip.Text);
+                    connectStatus.Content = "CN";
+                   // listenClient = new UdpClient(listeningPort);
+                   // Task.Run(() => ReceiveAsync(cts.Token) );
+                      if (receivingUdpClient == null)
+                    {
+                        receivingUdpClient = new UdpClient(11005);
+                        receivingUdpClient.Client.ReceiveTimeout = 5000;
+                    }
+                    SendUdp(portShits, deviceIP, portShits, Encoding.ASCII.GetBytes("connect"));
+                    receiveUdp();
                     break;
                 case "left":
                     if (//deviceClient != null &&
@@ -79,6 +93,14 @@ namespace buttonPluginTest.Client
                     {
                         SendUdp(portShits, deviceIP, portShits, Encoding.ASCII.GetBytes("toggle"));
                     }
+                    receiveUdp();
+
+                    if (controlStatus.Content.Equals("OP")) {
+                        controlStatus.Content = "AC";   
+                    }
+                    else {
+                        controlStatus.Content = "OP";
+                    }
                     break;
                 case "activate":
                     if (//deviceClient != null &&
@@ -93,19 +115,84 @@ namespace buttonPluginTest.Client
             //HERE FOR BUTTOn
             //SendUdp(portShits, deviceIP, portShits, Encoding.ASCII.GetBytes("cmd1"));
         }
-        static void SendUdp(int srcPort, string dstIp, int dstPort, byte[] data)
+
+
+        void receiveUdp()
         {
-          //  deviceClient.Send();
-             using (UdpClient c = new UdpClient(srcPort))
-           // UdpClient deviceClient = new UdpClient();
-            //  if (deviceClient!=null) {
-              c.Send(data, data.Length, dstIp, dstPort);
-            //deviceClient1
-           // _ = _deviceClient.Send(data, data.Length, dstIp, dstPort);
-           // }
+            if (receivingUdpClient != null)
+            {
+                IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
+                try
+                {
+
+                    // Blocks until a message returns on this socket from a remote host.
+                    Byte[] receiveBytes = receivingUdpClient.Receive(ref RemoteIpEndPoint);
+
+                    string returnData = Encoding.ASCII.GetString(receiveBytes);
+
+                    MessageBox.Show(returnData);
+                    //  Console.WriteLine("This is the message you received " +
+                    //                          returnData.ToString());
+                    //    receivingUdpClient.Close();
+                    //receivingUdpClient.EndReceive();
+                    //   receivingUdpClient.Dispose();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                    MessageBox.Show(e.ToString());
+                }
+            }
         }
-        UdpClient deviceClient = new UdpClient();
+         void SendUdp(int srcPort, string dstIp, int dstPort, byte[] data)
+        {
+            //  deviceClient.Send();
+            using (UdpClient c = new UdpClient(srcPort))
+            {
+                // UdpClient deviceClient = new UdpClient();
+                //  if (deviceClient!=null) {
+                c.Send(data, data.Length, dstIp, dstPort);
+                //deviceClient1
+                // _ = _deviceClient.Send(data, data.Length, dstIp, dstPort);
+                // }
+                // while (true)
+            }
+
+            //Creates a UdpClient for reading incoming data.
+
+            //Creates an IPEndPoint to record the IP Address and port number of the sender.
+            // The IPEndPoint will allow you to read datagrams sent from any source.
+
+          
+
+            // using (UdpClient c = new UdpClient(11001))
+            /*   {
+                   UdpReceiveResult result =// await c.ReceiveAsync();
+                       await listenClient.ReceiveAsync();
+                       String a = Encoding.UTF8.GetString(result.Buffer);
+                       if (a.Equals("motionAlarm")) {
+                           MessageBox.Show("HELP!!!");
+                       }
+                     //  var remoteEP = new IPEndPoint(IPAddress.Any, portShits);
+                     //  var data1 = c.Receive(ref remoteEP); // listen on port 11000
+                   }
+               }
+           /* UdpClient udpServer = new UdpClient(portShits);
+
+            while (true)
+            {
+                var remoteEP = new IPEndPoint(IPAddress.Any, portShits);
+                var data1 = udpServer.Receive(ref remoteEP); // listen on port 11000
+             //   Console.Write("receive data from " + remoteEP.ToString());
+             //   udpServer.Send(new byte[] { 1 }, 1, remoteEP); // reply back
+            }*/
+        }
+        UdpClient receivingUdpClient = null;// = new UdpClient();
+        public UdpClient listenClient;// = new UdpClient();
+        public CancellationTokenSource cts;// = new CancellationTokenSource();
         String deviceIP = null;
         int portShits = 11000;
+        int listeningPort = 11001;
+
     }
 }
