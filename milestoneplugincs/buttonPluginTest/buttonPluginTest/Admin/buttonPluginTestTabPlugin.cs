@@ -29,7 +29,7 @@ namespace buttonPluginTest.Admin
 
         public override string Name
         {
-            get { return "buttonPluginTest"; }
+            get { return "Device Driver"; }
         }
 
         /// <summary>

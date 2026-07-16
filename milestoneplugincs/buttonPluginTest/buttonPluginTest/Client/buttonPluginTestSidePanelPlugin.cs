@@ -66,7 +66,7 @@ namespace buttonPluginTest.Client
         /// </summary>
         public override string Name
         {
-            get { return "buttonPluginTest Side panel"; }
+            get { return "Device Driver Side panel"; }
         }
 
         /// <summary>

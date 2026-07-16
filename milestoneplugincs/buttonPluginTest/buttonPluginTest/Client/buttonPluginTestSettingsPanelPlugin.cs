@@ -19,7 +19,7 @@ namespace buttonPluginTest.Client
         /// <summary>
         /// Should return the title of this plug-in. It will be displayed in the Settings panel navigation list.
         /// </summary>
-        public override string Title { get { return "buttonPluginTest"; } }
+        public override string Title { get { return "Device Driver"; } }
 
         /// <summary>
         /// This method is called just before the Settings panel is closed.

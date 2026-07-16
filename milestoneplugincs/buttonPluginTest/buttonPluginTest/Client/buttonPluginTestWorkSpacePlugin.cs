@@ -26,7 +26,7 @@ namespace buttonPluginTest.Client
         /// </summary>
         public override string Name
         {
-            get { return "buttonPluginTest"; }
+            get { return "Device Driver"; }
         }
 
         /// <summary>
