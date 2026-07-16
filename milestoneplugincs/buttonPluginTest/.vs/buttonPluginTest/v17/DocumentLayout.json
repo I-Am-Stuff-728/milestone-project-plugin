@@ -7,11 +7,11 @@
       "RelativeMoniker": "D:0:0:{A10CEB29-62CF-4B75-8F33-D9DBFA4AF627}|buttonPluginTest\\buttonPluginTest.csproj|solutionrelative:buttonplugintest\\client\\buttonplugintestworkspaceviewitemwpfusercontrol.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A10CEB29-62CF-4B75-8F33-D9DBFA4AF627}|buttonPluginTest\\buttonPluginTest.csproj|c:\\users\\ivoan\\documents\\arduino\\milestonestuffs\\milestone project plugin\\milestoneplugincs\\buttonplugintest\\buttonplugintest\\client\\buttonplugintestworkspaceviewitemwpfusercontrol.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "AbsoluteMoniker": "D:0:0:{A10CEB29-62CF-4B75-8F33-D9DBFA4AF627}|buttonPluginTest\\buttonPluginTest.csproj|C:\\Users\\ivoan\\Documents\\Arduino\\milestonestuffs\\milestone project plugin\\milestoneplugincs\\buttonPluginTest\\buttonplugintest\\client\\buttonplugintestworkspaceviewitemwpfusercontrol.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{A10CEB29-62CF-4B75-8F33-D9DBFA4AF627}|buttonPluginTest\\buttonPluginTest.csproj|solutionrelative:buttonplugintest\\client\\buttonplugintestworkspaceviewitemwpfusercontrol.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A10CEB29-62CF-4B75-8F33-D9DBFA4AF627}|buttonPluginTest\\buttonPluginTest.csproj|c:\\users\\ivoan\\documents\\arduino\\milestonestuffs\\milestone project plugin\\milestoneplugincs\\buttonplugintest\\buttonplugintest\\client\\buttonplugintestworkspaceviewitemplugin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A10CEB29-62CF-4B75-8F33-D9DBFA4AF627}|buttonPluginTest\\buttonPluginTest.csproj|C:\\Users\\ivoan\\Documents\\Arduino\\milestonestuffs\\milestone project plugin\\milestoneplugincs\\buttonPluginTest\\buttonplugintest\\client\\buttonplugintestworkspaceviewitemplugin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A10CEB29-62CF-4B75-8F33-D9DBFA4AF627}|buttonPluginTest\\buttonPluginTest.csproj|solutionrelative:buttonplugintest\\client\\buttonplugintestworkspaceviewitemplugin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -19,11 +19,11 @@
       "RelativeMoniker": "D:0:0:{A10CEB29-62CF-4B75-8F33-D9DBFA4AF627}|buttonPluginTest\\buttonPluginTest.csproj|solutionrelative:buttonplugintest\\buttonplugintestdefinition.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A10CEB29-62CF-4B75-8F33-D9DBFA4AF627}|buttonPluginTest\\buttonPluginTest.csproj|c:\\users\\ivoan\\documents\\arduino\\milestonestuffs\\milestone project plugin\\milestoneplugincs\\buttonplugintest\\buttonplugintest\\client\\buttonplugintestworkspaceviewitemmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A10CEB29-62CF-4B75-8F33-D9DBFA4AF627}|buttonPluginTest\\buttonPluginTest.csproj|C:\\Users\\ivoan\\Documents\\Arduino\\milestonestuffs\\milestone project plugin\\milestoneplugincs\\buttonPluginTest\\buttonplugintest\\client\\buttonplugintestworkspaceviewitemmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A10CEB29-62CF-4B75-8F33-D9DBFA4AF627}|buttonPluginTest\\buttonPluginTest.csproj|solutionrelative:buttonplugintest\\client\\buttonplugintestworkspaceviewitemmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A10CEB29-62CF-4B75-8F33-D9DBFA4AF627}|buttonPluginTest\\buttonPluginTest.csproj|c:\\users\\ivoan\\documents\\arduino\\milestonestuffs\\milestone project plugin\\milestoneplugincs\\buttonplugintest\\buttonplugintest\\client\\buttonplugintestworkspaceplugin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A10CEB29-62CF-4B75-8F33-D9DBFA4AF627}|buttonPluginTest\\buttonPluginTest.csproj|C:\\Users\\ivoan\\Documents\\Arduino\\milestonestuffs\\milestone project plugin\\milestoneplugincs\\buttonPluginTest\\buttonplugintest\\client\\buttonplugintestworkspaceplugin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A10CEB29-62CF-4B75-8F33-D9DBFA4AF627}|buttonPluginTest\\buttonPluginTest.csproj|solutionrelative:buttonplugintest\\client\\buttonplugintestworkspaceplugin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -47,8 +47,7 @@
               "ViewState": "AgIAAJYAAAAAAAAAAAAAAKYAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-07-14T08:41:06.603Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
@@ -73,8 +72,7 @@
               "RelativeToolTip": "buttonPluginTest\\Client\\buttonPluginTestWorkSpaceViewItemPlugin.cs",
               "ViewState": "AgIAAA8AAAAAAAAAAAAYwB8AAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-15T11:58:26.933Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-07-15T11:58:26.933Z"
             },
             {
               "$type": "Document",
@@ -86,18 +84,17 @@
               "RelativeToolTip": "buttonPluginTest\\Client\\buttonPluginTestWorkSpaceViewItemManager.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-15T12:00:44.239Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-07-15T12:00:44.239Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Client\\buttonPluginTestWorkSpaceViewItemWpfUserControl.xaml.cs",
+              "Title": "buttonPluginTestWorkSpaceViewItemWpfUserControl.xaml.cs",
               "DocumentMoniker": "C:\\Users\\ivoan\\Documents\\Arduino\\milestonestuffs\\milestone project plugin\\milestoneplugincs\\buttonPluginTest\\buttonPluginTest\\Client\\buttonPluginTestWorkSpaceViewItemWpfUserControl.xaml.cs",
               "RelativeDocumentMoniker": "buttonPluginTest\\Client\\buttonPluginTestWorkSpaceViewItemWpfUserControl.xaml.cs",
               "ToolTip": "C:\\Users\\ivoan\\Documents\\Arduino\\milestonestuffs\\milestone project plugin\\milestoneplugincs\\buttonPluginTest\\buttonPluginTest\\Client\\buttonPluginTestWorkSpaceViewItemWpfUserControl.xaml.cs",
               "RelativeToolTip": "buttonPluginTest\\Client\\buttonPluginTestWorkSpaceViewItemWpfUserControl.xaml.cs",
-              "ViewState": "AgIAACoAAAAAAAAAAAASwDIAAAA2AAAAAAAAAA==",
+              "ViewState": "AgIAAMkAAAAAAAAAAAAAANIAAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-07-15T11:26:29.026Z",
               "EditorCaption": ""
@@ -112,8 +109,7 @@
               "RelativeToolTip": "buttonPluginTest\\Client\\buttonPluginTestWorkSpacePlugin.cs",
               "ViewState": "AgIAAKAAAAAAAAAAAADwvwkAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-15T09:43:52.271Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-07-15T09:43:52.271Z"
             }
           ]
         }

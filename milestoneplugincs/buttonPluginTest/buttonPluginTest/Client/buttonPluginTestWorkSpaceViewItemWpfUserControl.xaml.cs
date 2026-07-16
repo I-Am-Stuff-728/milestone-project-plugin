@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using NAudio.CoreAudioApi;
 using VideoOS.Platform.Client;
 
 namespace buttonPluginTest.Client
@@ -54,24 +55,53 @@ namespace buttonPluginTest.Client
 
         private void buttonMin_Click(object sender, System.Windows.RoutedEventArgs e)
         {
+        //
+        //ip.Text = loggingEvent;
             String[] split = sender.ToString().Split(':');
             String command = split[split.Length - 1].Trim().ToLower();
           
             switch (command) {
                 case "connect":
-                  //  deviceClient = new UdpClient(portShits);
                     deviceIP = ip.Text;
                   //  MessageBox.Show(ip.Text);
                     connectStatus.Content = "CN";
-                   // listenClient = new UdpClient(listeningPort);
-                   // Task.Run(() => ReceiveAsync(cts.Token) );
-                      if (receivingUdpClient == null)
+
+                    if (receivingUdpClient == null)
                     {
-                        receivingUdpClient = new UdpClient(11005);
+                     //   cts = new CancellationTokenSource();
+                        receivingUdpClient = new UdpClient(listeningPort);
                         receivingUdpClient.Client.ReceiveTimeout = 5000;
+                    //    receivingUdpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+                    //    receivingUdpClient.Client.Bind(new IPEndPoint(IPAddress.Any, listeningPort));
+                      
+                        _ = listenUdp();
+                        /*
+                         * Exception type:System.Net.Sockets.SocketException
+Exception message:An invalid argument was supplied
+Exception source:System
+Exception Target Site: DoBind
+   at System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.Sockets.Socket.Bind(EndPoint localEP)
+
+                        Exception type:System.Net.Sockets.SocketException
+Exception message:No such host is known
+Exception source:System
+
+                        */
                     }
-                    SendUdp(portShits, deviceIP, portShits, Encoding.ASCII.GetBytes("connect"));
-                    receiveUdp();
+                    else { 
+                        cts.Cancel();
+                        cts.Dispose();
+                        cts = null;
+
+                        receivingUdpClient.Close();
+                        receivingUdpClient.Dispose();
+                        receivingUdpClient = null;
+                        
+                    }
+
+                        SendUdp(portShits, deviceIP, portShits, Encoding.ASCII.GetBytes("connect"));
+                   // receiveUdp();
                     break;
                 case "left":
                     if (//deviceClient != null &&
@@ -93,7 +123,7 @@ namespace buttonPluginTest.Client
                     {
                         SendUdp(portShits, deviceIP, portShits, Encoding.ASCII.GetBytes("toggle"));
                     }
-                    receiveUdp();
+                 //   receiveUdp();
 
                     if (controlStatus.Content.Equals("OP")) {
                         controlStatus.Content = "AC";   
@@ -106,7 +136,6 @@ namespace buttonPluginTest.Client
                     if (//deviceClient != null &&
                         !deviceIP.Equals(null))
                     {
-                        // MessageBox.Show("trigger!!!");
                         SendUdp(portShits, deviceIP, portShits, Encoding.ASCII.GetBytes("trigger"));
                     }
                     break;
@@ -116,7 +145,7 @@ namespace buttonPluginTest.Client
             //SendUdp(portShits, deviceIP, portShits, Encoding.ASCII.GetBytes("cmd1"));
         }
 
-
+        /*
         void receiveUdp()
         {
             if (receivingUdpClient != null)
@@ -143,56 +172,72 @@ namespace buttonPluginTest.Client
                     MessageBox.Show(e.ToString());
                 }
             }
-        }
-         void SendUdp(int srcPort, string dstIp, int dstPort, byte[] data)
+        }*/
+
+                        void SendUdp(int srcPort, string dstIp, int dstPort, byte[] data)
         {
-            //  deviceClient.Send();
             using (UdpClient c = new UdpClient(srcPort))
             {
-                // UdpClient deviceClient = new UdpClient();
-                //  if (deviceClient!=null) {
                 c.Send(data, data.Length, dstIp, dstPort);
-                //deviceClient1
-                // _ = _deviceClient.Send(data, data.Length, dstIp, dstPort);
-                // }
-                // while (true)
             }
 
-            //Creates a UdpClient for reading incoming data.
-
-            //Creates an IPEndPoint to record the IP Address and port number of the sender.
-            // The IPEndPoint will allow you to read datagrams sent from any source.
-
-          
-
-            // using (UdpClient c = new UdpClient(11001))
-            /*   {
-                   UdpReceiveResult result =// await c.ReceiveAsync();
-                       await listenClient.ReceiveAsync();
-                       String a = Encoding.UTF8.GetString(result.Buffer);
-                       if (a.Equals("motionAlarm")) {
-                           MessageBox.Show("HELP!!!");
-                       }
-                     //  var remoteEP = new IPEndPoint(IPAddress.Any, portShits);
-                     //  var data1 = c.Receive(ref remoteEP); // listen on port 11000
-                   }
-               }
-           /* UdpClient udpServer = new UdpClient(portShits);
-
-            while (true)
-            {
-                var remoteEP = new IPEndPoint(IPAddress.Any, portShits);
-                var data1 = udpServer.Receive(ref remoteEP); // listen on port 11000
-             //   Console.Write("receive data from " + remoteEP.ToString());
-             //   udpServer.Send(new byte[] { 1 }, 1, remoteEP); // reply back
-            }*/
+        
         }
-        UdpClient receivingUdpClient = null;// = new UdpClient();
+
+        // static string loggingEvent = "";
+
+        // public static void UDPListener()
+        //  {
+        private async Task listenUdp()
+       // {
+
+         //   Task.Run(async () =>
+            {
+          //  if (receivingUdpClient == null) return;
+            cts = new CancellationTokenSource();
+
+            // using (var udpClient = new UdpClient(11000))
+            //try
+            {
+                String loggingEvent = "";
+                while (!cts.Token.IsCancellationRequested)
+                {
+                    //IPEndPoint object will allow us to read datagrams sent from any source.
+                    var receivedResults = await receivingUdpClient.ReceiveAsync();
+                    loggingEvent = Encoding.ASCII.GetString(receivedResults.Buffer);
+                    //ip.Text = ""+loggingEvent;
+                    // MessageBox.Show("AIUFHADUID");
+                    //MessageBox.Show(loggingEvent);
+                    connectStatus.Content = loggingEvent;
+                    // setText(loggingEvent);
+                    //  connectStatus.Content = loggingEvent;
+
+                }
+
+             /*   cts.Cancel();
+                cts.Dispose();
+                cts = null;
+             */
+            }
+
+
+            /* finally {
+
+              *  receivingUdpClient.Close();
+         receivingUdpClient.Dispose();
+         receivingUdpClient = null;
+               }
+             */
+            //   });
+        }
+
+
+        static UdpClient receivingUdpClient = null;// = new UdpClient();
         public UdpClient listenClient;// = new UdpClient();
         public CancellationTokenSource cts;// = new CancellationTokenSource();
         String deviceIP = null;
         int portShits = 11000;
-        int listeningPort = 11001;
+        int listeningPort = 11005;
 
     }
 }
