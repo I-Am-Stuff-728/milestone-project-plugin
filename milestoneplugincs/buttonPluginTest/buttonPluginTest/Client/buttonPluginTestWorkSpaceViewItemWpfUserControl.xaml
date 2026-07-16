@@ -5,17 +5,27 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:buttonPluginTest.Client"
              xmlns:platformclient="clr-namespace:VideoOS.Platform.Client;assembly=VideoOS.Platform"
-             mc:Ignorable="d" ClickEvent="ViewItemWpfUserControl_ClickEvent" DoubleClickEvent="ViewItemWpfUserControl_DoubleClickEvent" Height="271" Width="253">
-    <Grid>
-        <TextBox x:Name="ip" Height="23" Margin="59,3,93,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="textBox_TextChanged" Text="192.168.0.103"/>
-        <Button x:Name="connect1" Content="Connect" Margin="163,5,0,0" VerticalAlignment="Top" Width="80" Click="buttonMin_Click" HorizontalAlignment="Left"/>
-        <Button x:Name="level" Content="Left" Margin="5,61,186,131" Click="buttonMin_Click"/>
-        <Button x:Name="right" Content="Right"  Margin="186,61,5,130" Click="buttonMin_Click"/>
-        <Button x:Name="toggle" Content="Toggle"  Margin="87,35,87,182" Click="buttonMin_Click" Height="54"/>
-        <Button x:Name="activate" Content="Activate"  Margin="87,108,87,109" Click="buttonMin_Click" Height="54"/>
-        <Label x:Name="label" Content="Device IP:" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Label x:Name="controlStatus1" Content="AutoContr: Y" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="171,30,0,0" Width="77"/>
-        <Label x:Name="motionStatus1" Content="Motion: X" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,158,0,0" Width="71"/>
-        <Label x:Name="frontStatus1" Content="Front: X" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="177,158,0,0" Width="71"/>
+             mc:Ignorable="d" ClickEvent="ViewItemWpfUserControl_ClickEvent" DoubleClickEvent="ViewItemWpfUserControl_DoubleClickEvent" Height="300" Width="300" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold">
+    <Grid Width="280" Height="280">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0*"/>
+            <RowDefinition/>
+            <RowDefinition Height="0*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBox x:Name="ip" Height="30" Margin="69,3,0,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="textBox_TextChanged" Text="192.168.0.103" Grid.ColumnSpan="2" Grid.RowSpan="2" Background="#FF081327" HorizontalAlignment="Left" VerticalContentAlignment="Center" Width="102" Foreground="#FF0096D4"/>
+        <Button x:Name="connect1" Content="Connect" Margin="177,3,30,0" VerticalAlignment="Top" Click="buttonMin_Click" Grid.ColumnSpan="2" Grid.RowSpan="2" BorderBrush="#FF081327" BorderThickness="2" Padding="5" Background="#FF0096D4" Foreground="#FF081327" Height="30"/>
+        <Button x:Name="left" Content="Left" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5,96,200,120" Click="buttonMin_Click" Grid.ColumnSpan="2" Grid.Row="1" BorderBrush="#FF081327" BorderThickness="2" Padding="5" Background="#FF0096D4" Foreground="#FF081327" Height="64"/>
+        <Button x:Name="right" Content="Right" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  Margin="200,96,5,120" Click="buttonMin_Click" Grid.ColumnSpan="2" Grid.Row="1" BorderBrush="#FF081327" BorderThickness="2" Padding="5" Background="#FF0096D4" Foreground="#FF081327" Height="64" />
+        <Button x:Name="toggle" Content="Toggle" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="87,62,87,160" Click="buttonMin_Click" Grid.ColumnSpan="2" Grid.Row="1" BorderBrush="#FF081327" BorderThickness="2" Padding="5" Background="#FF0096D4" Foreground="#FF081327" Height="58"/>
+        <Button x:Name="activate" Content="Activate" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  Margin="87,140,87,82" Click="buttonMin_Click" Grid.ColumnSpan="2" Grid.Row="1" BorderBrush="#FF081327" BorderThickness="2" Padding="5" Background="#FF0096D4" Foreground="#FF081327" Height="58"/>
+        <Label x:Name="label" Content="Device IP:"   Grid.ColumnSpan="2" Grid.RowSpan="2" Foreground="#FF0096D4" Margin="2,3,211,248" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        <Label x:Name="controlStatus1" Content="AutoContr: Y"  Margin="90,228,90,23" Grid.ColumnSpan="2" Grid.Row="1" Foreground="#FF0096D4" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <Label x:Name="motionStatus1" Content="Move: X"  Margin="208,208,5,5" Grid.ColumnSpan="2" Grid.Row="1" Foreground="#FF0096D4" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" BorderBrush="#FF081327" BorderThickness="2" Background="Lime" FontSize="10"/>
+        <Label x:Name="frontStatus1"  Content="Front: X" Margin="5,208,208,5" Grid.ColumnSpan="2" Grid.Row="1" Foreground="#FF0096D4" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderBrush="#FF081327" BorderThickness="2" Background="Lime" FontSize="10"/>
+        <Label x:Name="colorLabel" Content=""   Grid.ColumnSpan="2" Foreground="#FF081327" Margin="253,6,3,250" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Row="1" BorderBrush="#FF081327" BorderThickness="1" Background="Red" />
     </Grid>
 </platformclient:ViewItemWpfUserControl>

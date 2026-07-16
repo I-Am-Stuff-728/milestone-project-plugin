@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using NAudio.CoreAudioApi;
 using VideoOS.Platform.Client;
 
@@ -111,6 +112,9 @@ Exception source:System
 
                     connect1.Content = "Connect";
                     deviceIP = null;
+
+                    colorLabel.Background = new SolidColorBrush(Color.FromRgb(255, 0, 0));
+
 
                     break;
 
@@ -225,18 +229,24 @@ Exception source:System
                         case "connect success":
                             connect1.Content = "Disconnect";
                             MessageBox.Show("Connected!");
+                            colorLabel.Background = new SolidColorBrush(Color.FromRgb(0, 255, 0));
                             break;
                         case "frontAlarm":
                             frontStatus1.Content = "Front: Y";
+                            frontStatus1.Background = new SolidColorBrush(Color.FromRgb(255, 0, 0));
                             break;
                         case "moveAlarm":
                             motionStatus1.Content = "Motion: Y";
+                            motionStatus1.Background = new SolidColorBrush(Color.FromRgb(255, 0, 0));
                             break;
                         case "frontAlarmOff":
                             frontStatus1.Content = "Front: X";
+                            frontStatus1.Background = new SolidColorBrush(Color.FromRgb(0, 255, 0));
                             break;
                         case "moveAlarmOff":
                             motionStatus1.Content = "Motion: X";
+                            motionStatus1.Background = new SolidColorBrush(Color.FromRgb(0, 255, 0));
+
                             break;
                         case "autocontrol":
                             controlStatus1.Content = "AutoContr: Y";
