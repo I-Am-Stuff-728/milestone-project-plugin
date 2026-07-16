@@ -8,13 +8,14 @@
              mc:Ignorable="d" ClickEvent="ViewItemWpfUserControl_ClickEvent" DoubleClickEvent="ViewItemWpfUserControl_DoubleClickEvent" Height="271" Width="253">
     <Grid>
         <TextBox x:Name="ip" Height="23" Margin="59,3,93,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="textBox_TextChanged" Text="192.168.0.103"/>
-        <Button x:Name="connect" Content="Connect" Margin="163,5,0,0" VerticalAlignment="Top" Width="46" Click="buttonMin_Click" HorizontalAlignment="Left"/>
-        <Button x:Name="level" Content="Left" Margin="10,79,188,139" Click="buttonMin_Click" Height="53"/>
-        <Button x:Name="right" Content="Right"  Margin="186,78,10,139"  Width="57" Click="buttonMin_Click" Height="54"/>
-        <Button x:Name="toggle" Content="Toggle"  Margin="98,35,99,182" Width="56" Click="buttonMin_Click" Height="54"/>
-        <Button x:Name="activate" Content="Activate"  Margin="98,108,99,109" Width="56" Click="buttonMin_Click" Height="54"/>
+        <Button x:Name="connect1" Content="Connect" Margin="163,5,0,0" VerticalAlignment="Top" Width="80" Click="buttonMin_Click" HorizontalAlignment="Left"/>
+        <Button x:Name="level" Content="Left" Margin="5,61,186,131" Click="buttonMin_Click"/>
+        <Button x:Name="right" Content="Right"  Margin="186,61,5,130" Click="buttonMin_Click"/>
+        <Button x:Name="toggle" Content="Toggle"  Margin="87,35,87,182" Click="buttonMin_Click" Height="54"/>
+        <Button x:Name="activate" Content="Activate"  Margin="87,108,87,109" Click="buttonMin_Click" Height="54"/>
         <Label x:Name="label" Content="Device IP:" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Label x:Name="connectStatus" Content="DCN" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="209,0,0,0" Width="44"/>
-        <Label x:Name="controlStatus" Content="AC" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="208,27,0,0" Width="45"/>
+        <Label x:Name="controlStatus1" Content="AutoContr: Y" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="171,30,0,0" Width="77"/>
+        <Label x:Name="motionStatus1" Content="Motion: X" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,158,0,0" Width="71"/>
+        <Label x:Name="frontStatus1" Content="Front: X" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="177,158,0,0" Width="71"/>
     </Grid>
 </platformclient:ViewItemWpfUserControl>

@@ -127,9 +127,14 @@ void loop() {
    // Serial.println("Too far!!");
        digitalWrite(buzzerPins[0], HIGH);
        digitalWrite(buzzerPins[1], HIGH);
-
+             
+       udp.beginPacket(udp.remoteIP(), 11005);
+       udp.print(("frontAlarmOff"));
+       udp.endPacket();
+     //  Serial.println("TURN OFF FRONT ALARM");
   } else {
       freeze=true;
+      frontalDetectedAlarm();
      // frontalDetectedAlarm();
     digitalWrite(buzzerPins[0], LOW);
     digitalWrite(buzzerPins[1], HIGH);
@@ -295,6 +300,11 @@ void loop() {
       motionDetectedAlarm();
   }else{
       digitalWrite(ledPins[2], HIGH);
+       udp.beginPacket(udp.remoteIP(), 11005);
+       udp.print(("moveAlarmOff"));
+       udp.endPacket();
+              Serial.println("TURN OFF MOVE ALARM");
+
     //  Serial.println("NOP");
   }
 
@@ -304,7 +314,7 @@ void loop() {
 
 void rotateLeft(){
 //  Serial.println("i go to the left");
-  if (!freeze){
+  if (!freeze || !autoControl){
     stepper.step(-60);
 
   }
@@ -315,7 +325,7 @@ void rotateLeft(){
 
 void rotateRight(){
   //  Serial.println("i go to the right");
-  if (!freeze){
+  if (!freeze || !autoControl){
     stepper.step(60);
   }
     /*   udp.beginPacket(udp.remoteIP(), 11005);
@@ -377,9 +387,9 @@ void motionDetectedAlarm(){
   // TODO:
   //SEND PACKET
        udp.beginPacket(udp.remoteIP(), 11005);
-       udp.print(("motionAlarm"));
+       udp.print(("moveAlarm"));
        udp.endPacket();
-       Serial.println("HELP");
+      // Serial.println("HELP");
 }
 
 

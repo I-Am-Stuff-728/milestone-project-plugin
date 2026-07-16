@@ -59,22 +59,25 @@ namespace buttonPluginTest.Client
         //ip.Text = loggingEvent;
             String[] split = sender.ToString().Split(':');
             String command = split[split.Length - 1].Trim().ToLower();
-          
+
+           // MessageBox.Show(command);
+
             switch (command) {
                 case "connect":
-                    deviceIP = ip.Text;
-                  //  MessageBox.Show(ip.Text);
-                    connectStatus.Content = "CN";
+                    deviceIP = ip.Text.Trim();
 
                     if (receivingUdpClient == null)
                     {
-                     //   cts = new CancellationTokenSource();
+                        //   cts = new CancellationTokenSource();
                         receivingUdpClient = new UdpClient(listeningPort);
                         receivingUdpClient.Client.ReceiveTimeout = 5000;
-                    //    receivingUdpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-                    //    receivingUdpClient.Client.Bind(new IPEndPoint(IPAddress.Any, listeningPort));
-                      
+                        //    receivingUdpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+                        //    receivingUdpClient.Client.Bind(new IPEndPoint(IPAddress.Any, listeningPort));
+
                         _ = listenUdp();
+
+                        SendUdp(portShits, deviceIP, portShits, Encoding.ASCII.GetBytes("connect"));
+
                         /*
                          * Exception type:System.Net.Sockets.SocketException
 Exception message:An invalid argument was supplied
@@ -89,52 +92,60 @@ Exception source:System
 
                         */
                     }
-                    else { 
-                        cts.Cancel();
-                        cts.Dispose();
-                        cts = null;
-
-                        receivingUdpClient.Close();
-                        receivingUdpClient.Dispose();
-                        receivingUdpClient = null;
-                        
+                    else {
+                        connect1.Content = "Disonnect";
                     }
 
-                        SendUdp(portShits, deviceIP, portShits, Encoding.ASCII.GetBytes("connect"));
-                   // receiveUdp();
+
+                        // receiveUdp();
+                        break;
+
+                case "disconnect":
+                    cts.Cancel();
+                    cts.Dispose();
+                    cts = null;
+
+                    receivingUdpClient.Close();
+                    receivingUdpClient.Dispose();
+                    receivingUdpClient = null;
+
+                    connect1.Content = "Connect";
+                    deviceIP = null;
+
                     break;
+
                 case "left":
                     if (//deviceClient != null &&
-                        !deviceIP.Equals(null))
+                        deviceIP != (null))
                     {
                         SendUdp(portShits, deviceIP, portShits, Encoding.ASCII.GetBytes("left"));
                     }
                     break;
                 case "right":
                     if (//deviceClient != null && 
-                        !deviceIP.Equals(null))
+                        deviceIP != (null))
                     {
                         SendUdp(portShits, deviceIP, portShits, Encoding.ASCII.GetBytes("right"));
                     }
                     break;
                 case "toggle":
                     if (//deviceClient != null &&
-                        !deviceIP.Equals(null))
+                        deviceIP != (null))
                     {
                         SendUdp(portShits, deviceIP, portShits, Encoding.ASCII.GetBytes("toggle"));
                     }
                  //   receiveUdp();
-
-                    if (controlStatus.Content.Equals("OP")) {
-                        controlStatus.Content = "AC";   
+                 /*
+                    if (controlStatus1.Content.Equals("OP")) {
+                        controlStatus1.Content = "AC";   
                     }
                     else {
-                        controlStatus.Content = "OP";
-                    }
+                        controlStatus1.Content = "OP";
+                    }*/
                     break;
                 case "activate":
                     if (//deviceClient != null &&
-                        !deviceIP.Equals(null))
+                        deviceIP != (null))
                     {
                         SendUdp(portShits, deviceIP, portShits, Encoding.ASCII.GetBytes("trigger"));
                     }
@@ -200,24 +211,56 @@ Exception source:System
             //try
             {
                 String loggingEvent = "";
-                while (!cts.Token.IsCancellationRequested)
+               // while (!cts.Token.IsCancellationRequested)
+               while (true)
                 {
                     //IPEndPoint object will allow us to read datagrams sent from any source.
                     var receivedResults = await receivingUdpClient.ReceiveAsync();
                     loggingEvent = Encoding.ASCII.GetString(receivedResults.Buffer);
+                    //frontStatus1.Content = "Front: N";
+                    //motionStatus1.Content = "Motion: N";
+
+                    switch (loggingEvent)
+                    {
+                        case "connect success":
+                            connect1.Content = "Disconnect";
+                            MessageBox.Show("Connected!");
+                            break;
+                        case "frontAlarm":
+                            frontStatus1.Content = "Front: Y";
+                            break;
+                        case "moveAlarm":
+                            motionStatus1.Content = "Motion: Y";
+                            break;
+                        case "frontAlarmOff":
+                            frontStatus1.Content = "Front: X";
+                            break;
+                        case "moveAlarmOff":
+                            motionStatus1.Content = "Motion: X";
+                            break;
+                        case "autocontrol":
+                            controlStatus1.Content = "AutoContr: Y";
+                            break;
+                        case "operator":
+                            controlStatus1.Content = "AutoContr: X";
+                            break;
+
+                    }
                     //ip.Text = ""+loggingEvent;
                     // MessageBox.Show("AIUFHADUID");
                     //MessageBox.Show(loggingEvent);
-                    connectStatus.Content = loggingEvent;
+                   // connectStatus.Content = loggingEvent;
                     // setText(loggingEvent);
                     //  connectStatus.Content = loggingEvent;
 
                 }
+              //  cts = null;
+               // receivingUdpClient = null;
 
-             /*   cts.Cancel();
-                cts.Dispose();
-                cts = null;
-             */
+                /*   cts.Cancel();
+                   cts.Dispose();
+                   cts = null;
+                */
             }
 
 
